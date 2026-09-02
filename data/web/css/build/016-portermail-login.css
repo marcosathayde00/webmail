@@ -1,0 +1,256 @@
+/* PorterMail: redesign da pagina de login com os design tokens DTCG (Bangs & Bangues) -
+   escopado em .portermail-login, nao vaza pro resto do painel. Valores do modo light. */
+.portermail-login {
+  /* --- tokens (semantic, modo light) --- */
+  --pm-font: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --pm-brand-primary: #384AA0;
+  --pm-primary-hover: #263FA9;
+  --pm-primary-pressed: #1B2C73;
+
+  --pm-text-default: #1C1C1C;
+  --pm-text-muted: #656968;
+  --pm-text-subtle: #9A9E9D;
+  --pm-text-on-brand: #FFFFFF;
+  --pm-text-link: #384AA0;
+  --pm-text-link-active: #191248;
+
+  --pm-surface-bg: #FFFFFF;
+  --pm-surface-page: #F7F8FA;
+  --pm-surface-container: #EAEBED;
+  --pm-surface-container-high: #DCE1E0;
+
+  --pm-border-default: #DCE1E0;
+  --pm-border-focus: #384AA0;
+
+  --pm-danger-bg: #E0C6CA;
+  --pm-danger-fg: #AA0004;
+  --pm-info-bg: #C7D7DE;
+  --pm-info-fg: #075B9E;
+
+  --pm-radius-sm: 4px;
+  --pm-radius-md: 8px;
+  --pm-radius-lg: 16px;
+
+  --pm-space-sm: 8px;
+  --pm-space-md: 16px;
+  --pm-space-lg: 24px;
+  --pm-space-xl: 32px;
+
+  --pm-shadow-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.12);
+
+  font-family: var(--pm-font);
+}
+
+/* Backdrop atras do card - funciona em navegadores modernos com :has(); onde nao suportado
+   so mantem o fundo padrao do mailcow, sem quebrar nada. */
+body:has(.portermail-login) {
+  background: var(--pm-surface-page);
+}
+
+.portermail-login {
+  margin-top: 80px !important;
+}
+
+/* --- card --- */
+.portermail-login .card {
+  background: var(--pm-surface-bg);
+  border: none;
+  border-radius: var(--pm-radius-lg);
+  box-shadow: var(--pm-shadow-lg);
+  overflow: hidden;
+}
+
+.portermail-login .card-header {
+  background: var(--pm-surface-bg);
+  border-bottom: 1px solid var(--pm-border-default);
+  color: var(--pm-text-muted);
+  font-family: var(--pm-font);
+  font-size: 14px;
+  font-weight: 500;
+  padding: var(--pm-space-md) var(--pm-space-lg);
+}
+
+.portermail-login .card-header i {
+  color: var(--pm-text-subtle);
+}
+
+.portermail-login .card-body {
+  padding: var(--pm-space-xl) var(--pm-space-lg) var(--pm-space-lg);
+}
+
+/* --- logo --- */
+.portermail-login .mailcow-logo {
+  margin-bottom: var(--pm-space-lg) !important;
+}
+
+.portermail-login .mailcow-logo img {
+  height: 44px;
+  width: auto;
+  max-width: none;
+}
+
+/* --- titulo (legend) --- */
+.portermail-login legend {
+  font-family: var(--pm-font);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--pm-text-default);
+  text-align: center;
+  border: none;
+  margin-bottom: var(--pm-space-md);
+}
+
+.portermail-login hr {
+  display: none;
+}
+
+/* --- inputs --- */
+.portermail-login .input-group {
+  margin-bottom: var(--pm-space-md);
+}
+
+.portermail-login .form-control,
+.portermail-login .input-group-text {
+  background: var(--pm-surface-bg);
+  border: 1px solid var(--pm-border-default);
+  color: var(--pm-text-default);
+  font-family: var(--pm-font);
+  font-size: 15px;
+  height: 48px;
+}
+
+.portermail-login .input-group-text {
+  color: var(--pm-text-subtle);
+  border-right: none;
+  border-radius: var(--pm-radius-sm) 0 0 var(--pm-radius-sm);
+}
+
+.portermail-login .form-control {
+  border-left: none;
+  border-radius: 0 var(--pm-radius-sm) var(--pm-radius-sm) 0;
+}
+
+.portermail-login .form-control::placeholder {
+  color: var(--pm-text-subtle);
+}
+
+.portermail-login .input-group:focus-within .form-control,
+.portermail-login .input-group:focus-within .input-group-text {
+  border-color: var(--pm-border-focus);
+}
+
+.portermail-login .form-control:focus {
+  box-shadow: 0 0 0 3px rgba(56, 74, 160, 0.18);
+  border-color: var(--pm-border-focus);
+}
+
+/* --- botao principal (Entrar) - usa a classe btn-success do mailcow, recolorido pra
+   action.primary do design system em vez do verde padrao do Bootstrap --- */
+.portermail-login .btn-success {
+  background-color: var(--pm-brand-primary) !important;
+  border-color: var(--pm-brand-primary) !important;
+  color: var(--pm-text-on-brand) !important;
+  font-family: var(--pm-font);
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  border-radius: var(--pm-radius-md) !important;
+  box-shadow: none !important;
+}
+
+.portermail-login .btn-success:hover {
+  background-color: var(--pm-primary-hover) !important;
+  border-color: var(--pm-primary-hover) !important;
+}
+
+.portermail-login .btn-success:active,
+.portermail-login .btn-success:focus {
+  background-color: var(--pm-primary-pressed) !important;
+  border-color: var(--pm-primary-pressed) !important;
+}
+
+.portermail-login .btn-secondary {
+  background-color: var(--pm-surface-container) !important;
+  border-color: var(--pm-border-default) !important;
+  color: var(--pm-text-default) !important;
+  font-family: var(--pm-font);
+  border-radius: var(--pm-radius-md) !important;
+}
+
+.portermail-login .btn-secondary:hover {
+  background-color: var(--pm-surface-container-high) !important;
+}
+
+.portermail-login .btn-primary {
+  background-color: var(--pm-brand-primary) !important;
+  border-color: var(--pm-brand-primary) !important;
+  border-radius: var(--pm-radius-md) !important;
+  font-family: var(--pm-font);
+}
+
+.portermail-login .btn-primary:hover {
+  background-color: var(--pm-primary-hover) !important;
+  border-color: var(--pm-primary-hover) !important;
+}
+
+/* --- links --- */
+.portermail-login a {
+  color: var(--pm-text-link);
+  font-family: var(--pm-font);
+}
+
+.portermail-login a:hover,
+.portermail-login a:active {
+  color: var(--pm-text-link-active);
+}
+
+.portermail-login .hr-title {
+  color: var(--pm-text-muted);
+  font-family: var(--pm-font);
+}
+
+/* --- alerts --- */
+.portermail-login .alert-info {
+  background: var(--pm-info-bg);
+  color: var(--pm-info-fg);
+  border: 1px solid var(--pm-info-fg);
+  border-radius: var(--pm-radius-sm);
+  font-family: var(--pm-font);
+  font-size: 14px;
+}
+
+.portermail-login .alert-danger {
+  background: var(--pm-danger-bg);
+  color: var(--pm-danger-fg);
+  border: 1px solid var(--pm-danger-fg);
+  border-radius: var(--pm-radius-sm);
+  font-family: var(--pm-font);
+  font-size: 14px;
+}
+
+.portermail-login .text-muted {
+  color: var(--pm-text-muted) !important;
+  font-family: var(--pm-font);
+  font-size: 13px;
+}
+
+/* --- link de acesso admin, discreto abaixo do form --- */
+.portermail-admin-link {
+  font-family: var(--pm-font);
+  font-size: 13px;
+}
+
+.portermail-admin-link a {
+  color: var(--pm-text-muted);
+}
+
+.portermail-admin-link a:hover {
+  color: var(--pm-brand-primary);
+}
+
+/* --- dark mode / idioma toggle no header, discretos --- */
+.portermail-login .card-header .form-check-label,
+.portermail-login .card-header .dropdown-toggle {
+  color: var(--pm-text-subtle);
+}

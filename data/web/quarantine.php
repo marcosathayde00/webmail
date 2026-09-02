@@ -6,6 +6,13 @@ if (!isset($_SESSION['mailcow_cc_role'])) {
   exit();
 }
 
+// PorterMail: usuario comum nao tem mais acesso a quarentena self-service (mesma
+// politica aplicada em /user) - so admin/domainadmin.
+if ($_SESSION['mailcow_cc_role'] == 'user') {
+  header('Location: /SOGo/so/');
+  exit();
+}
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/header.inc.php';
 $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
 $quarantine_settings = quarantine('settings');

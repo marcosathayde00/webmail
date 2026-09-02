@@ -9,6 +9,9 @@
   <title>{{ ui_texts.title_name|raw }}</title>
 
   <link rel="stylesheet" href="{{ css_path }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     // check if darkmode is preferred by OS or set by localStorage
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && localStorage.getItem("mailcow_theme") !== "light" ||
@@ -32,8 +35,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top p-0">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
-      <img class="main-logo" alt="mailcow-logo" src="{{ logo|default('/img/cow_mailcow.svg') }}">
-      <img class="main-logo-dark" alt="mailcow-logo-dark" src="{{ logo_dark|default('/img/cow_mailcow.svg') }}">
+      <img class="main-logo" alt="mailcow-logo" src="{{ logo|default('/img/porter-logo.png') }}">
+      <img class="main-logo-dark" alt="mailcow-logo-dark" src="{{ logo_dark|default('/img/porter-logo.png') }}">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list fs-3"></i>
@@ -84,10 +87,6 @@
         <li class="nav-item dropdown">
           <a href="/domainadmin/user" class="nav-link" role="button" aria-expanded="false">{{ lang.header.user_settings }}</a>
         </li>
-        {% elseif mailcow_cc_role == 'user' %}
-        <li class="nav-item dropdown">
-          <a href="/user" class="nav-link" role="button" aria-expanded="false">{{ lang.header.user_settings }}</a>
-        </li>
         {% endif %}
 
         {% if mailcow_cc_role == 'domainadmin' %}
@@ -97,12 +96,6 @@
             <li><a href="/domainadmin/mailbox" class="dropdown-item {% if is_uri('mailbox') %}active{% endif %}">{{ lang.header.mailcow_config }}</a></li>
             <li><a href="/quarantine" class="dropdown-item {% if is_uri('quarantine') %}active{% endif %}">{{ lang.header.quarantine }}</a></li>
           </ul>
-        </li>
-        {% endif %}
-
-        {% if mailcow_cc_role == 'user' %}
-        <li class="nav-item dropdown">
-          <a href="/quarantine" class="nav-link">{{ lang.header.quarantine }}</a>
         </li>
         {% endif %}
         {% endif %}
