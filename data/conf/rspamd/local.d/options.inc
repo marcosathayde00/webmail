@@ -1,5 +1,7 @@
 dns {
   enable_dnssec = true;
+  timeout = 2s;
+  retransmits = 3;
 }
 map_watch_interval = 30s;
 task_timeout = 30s;
