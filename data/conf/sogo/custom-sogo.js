@@ -48,7 +48,8 @@ function mc_logout() {
     ".sg-login, .sg-login.md-bg, .sg-login.md-accent.md-bg, .sg-login.md-default-theme.md-bg { background-color: #384AA0 !important; background-image: none !important; }" +
     ".sg-login .md-button.md-fab, .sg-login button.md-fab { background-color: #FFFFFF !important; color: #384AA0 !important; }" +
     ".sg-login .md-icon-button md-icon, .sg-login .md-button md-icon { color: #FFFFFF !important; fill: #FFFFFF !important; }" +
-    ".sg-login, .sg-login *, .sg-logo, .input-login-label, .input-login-input, .sg-hint, .password-lost-link { font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif !important; }" +
+    ".sg-login, .sg-logo, .sg-login-content, .input-login-label, .input-login-input, .sg-hint, .password-lost-link, .sg-login .md-button { font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif !important; }" +
+    ".sg-login md-icon, .sg-login .material-icons { font-family: 'Material Icons' !important; }" +
     ".input-login-input { border-bottom-color: rgba(255,255,255,0.5) !important; color: #FFFFFF !important; }" +
     ".input-login-input:focus, .input-login-focused .input-login-input { border-bottom-color: #FFFFFF !important; }" +
     ".input-login-label { color: rgba(255,255,255,0.75) !important; }";
