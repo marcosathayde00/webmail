@@ -915,6 +915,15 @@ jQuery(function($){
         data: function(d) {
           return JSON.stringify(d);
         },
+        error: function (xhr, status, thrown) {
+          // PorterMail: sem isso, uma resposta invalida/vazia (rede, timeout, JSON
+          // quebrado) deixava "processando" preso na tela pra sempre, mesmo depois de
+          // limpar o filtro - agora ao menos libera a tabela e avisa no console.
+          console.error('mailbox_table ajax error:', status, thrown);
+          var api = $('#mailbox_table').DataTable();
+          api.processing(false);
+          api.clear().draw(false);
+        },
         dataSrc: function(json){
           $.each(json.data, function (i, item) {
             item.quota = {
