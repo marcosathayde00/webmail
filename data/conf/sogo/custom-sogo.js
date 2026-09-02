@@ -40,7 +40,18 @@ function mc_logout() {
     "button.md-fab, .md-fab.md-default-theme, md-fab-speed-dial .md-fab-trigger button { background-color: #263FA9 !important; color: #fff !important; }" +
     "md-sidenav, .md-sidenav-left { background-color: #F7F8FA !important; }" +
     "md-content .selected, md-list-item.selected, .navigation-folder-selected { background-color: #EEF1FE !important; color: #384AA0 !important; }" +
-    "a, .ui-selected { color: #384AA0; }";
+    "a, .ui-selected { color: #384AA0; }" +
+    /* PorterMail: tela de login nativa do SOGo (/SOGo/so/) - o painel azul usa classes
+       md-accent/md-bg geradas em runtime pelo $mdThemingProvider, cor variava conforme o
+       hue configurado; forcado para o brand.primary exato aqui, igual usado no resto do
+       sistema (login mailcow, toolbar do webmail). */
+    ".sg-login, .sg-login.md-bg, .sg-login.md-accent.md-bg, .sg-login.md-default-theme.md-bg { background-color: #384AA0 !important; background-image: none !important; }" +
+    ".sg-login .md-button.md-fab, .sg-login button.md-fab { background-color: #FFFFFF !important; color: #384AA0 !important; }" +
+    ".sg-login .md-icon-button md-icon, .sg-login .md-button md-icon { color: #FFFFFF !important; fill: #FFFFFF !important; }" +
+    ".sg-login, .sg-login *, .sg-logo, .input-login-label, .input-login-input, .sg-hint, .password-lost-link { font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif !important; }" +
+    ".input-login-input { border-bottom-color: rgba(255,255,255,0.5) !important; color: #FFFFFF !important; }" +
+    ".input-login-input:focus, .input-login-focused .input-login-input { border-bottom-color: #FFFFFF !important; }" +
+    ".input-login-label { color: rgba(255,255,255,0.75) !important; }";
   document.head.appendChild(style);
 })();
 
