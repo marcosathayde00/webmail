@@ -459,6 +459,9 @@ services:
         mailcow-network:
           aliases:
             - nginx
+        FRONTEND:
+          aliases:
+            - webmail
 
     acme-mailcow:
       depends_on:
@@ -672,6 +675,12 @@ networks:
       config:
         - subnet: ${IPV4_NETWORK:-172.22.1}.0/24
         - subnet: ${IPV6_NETWORK:-fd4d:6169:6c63:6f77::/64}
+  # PorterMail: rede externa do Nginx Proxy Manager ja existente no servidor -
+  # permite o NPM alcancar nginx-mailcow direto pelo nome de container (alias
+  # "webmail"), sem precisar publicar porta 80/443 do mailcow no host (ja
+  # ocupadas por outro app) nem mexer em firewall pra esse hop interno.
+  FRONTEND:
+    external: true
 
 volumes:
   vmail-vol-1:
