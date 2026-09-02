@@ -393,8 +393,11 @@
       }
     }
     $submitBtn.prop('disabled', false).text('Criar contas');
-    if (created > 0) {
-      setTimeout(function () { window.location = window.location.href.split('#')[0]; }, 1200);
+    /* PorterMail: nao navega/recarrega a pagina inteira - so atualiza a tabela ja existente
+       (mesmo mecanismo do botao "Atualizar"), assim o admin ve o resultado por linha e ainda
+       pode copiar as senhas geradas antes de fechar o modal. */
+    if (created > 0 && $.fn.DataTable && $.fn.DataTable.isDataTable('#mailbox_table')) {
+      $('#mailbox_table').DataTable().ajax.reload(null, false);
     }
   }
 
