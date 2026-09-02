@@ -398,7 +398,12 @@
     }
   }
 
-  $(document).ready(function () {
+  /* PorterMail: este bloco fica no meio do <body> (dentro do include de modals/mailbox.twig),
+     antes do <script src="{{ js_path }}"> que carrega o jQuery no final da pagina - por isso
+     nao pode usar $(document).ready aqui (executaria $ antes dele existir). Usa window 'load'
+     em vez de DOMContentLoaded/ready: so dispara depois que TODOS os scripts, inclusive o
+     bundle com o jQuery, ja carregaram. */
+  window.addEventListener('load', function () {
     $modal = $('#addMailboxBulkModal');
     rowTemplate = $modal.find('.bulk-mailbox-row').first().clone();
 
