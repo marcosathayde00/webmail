@@ -3148,7 +3148,15 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
               $quota_b              = $quota_m * 1048576;
               $password             = (!empty($_data['password'])) ? $_data['password'] : null;
               $password2            = (!empty($_data['password2'])) ? $_data['password2'] : null;
-              $tags                 = (is_array($_data['tags']) ? $_data['tags'] : array());
+              // PorterMail: a tela de edicao remove tags existentes individualmente (uma
+              // chamada de API por tag, na hora do clique) - o campo "tags" do formulario
+              // principal so carrega as tags NOVAS digitadas na caixa, ainda nao salvas.
+              // Sem o merge com $is_now['tags'], qualquer salvamento (mesmo sem mexer na
+              // caixa de tags) enviava "" -> is_array()===false -> sobrescrevia tudo com
+              // array vazio, apagando as tags existentes.
+              $new_tags             = (is_array($_data['tags'])) ? $_data['tags'] : array();
+              $existing_tags        = (isset($is_now['tags']) && is_array($is_now['tags'])) ? $is_now['tags'] : array();
+              $tags                 = array_values(array_unique(array_merge($existing_tags, $new_tags)));
               $attribute_hash       = (!empty($_data['attribute_hash'])) ? $_data['attribute_hash'] : '';
               $authsource           = $is_now['authsource'];
               if ($_data['authsource'] == "mailcow" ||
