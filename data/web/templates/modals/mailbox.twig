@@ -234,6 +234,195 @@
     </div>
   </div>
 </div><!-- add mailbox modal -->
+<!-- add mailbox bulk modal (PorterMail) -->
+<div class="modal fade" id="addMailboxBulkModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content porter-bulk-mailbox">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="bi bi-people-fill me-2"></i>Criar contas em massa</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3 align-items-center">
+          <label class="control-label col-sm-2 text-sm-end" for="bulkMailboxDomain">{{ lang.add.domain }}</label>
+          <div class="col-sm-6">
+            <select class="full-width-select" data-live-search="true" id="bulkMailboxDomain" required>
+              {% for domain in domains %}
+              <option>{{ domain }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-check">
+              <label><input type="checkbox" class="form-check-input" id="bulkMailboxSogo" checked> Acesso ao webmail (SOGo)</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+          <label class="control-label col-sm-2 text-sm-end" for="bulkMailboxQuota">{{ lang.add.quota_mb }}</label>
+          <div class="col-sm-3">
+            <input type="number" class="form-control" id="bulkMailboxQuota" min="0" value="3072">
+          </div>
+          <div class="col-sm-7">
+            <small class="text-muted">Quota aplicada a todas as contas desta lista. 0 = ilimitado.</small>
+          </div>
+        </div>
+        <hr>
+        <div class="table-responsive">
+          <table class="table porter-bulk-table" id="bulkMailboxTable">
+            <thead>
+              <tr>
+                <th style="width:28%">Usuário</th>
+                <th style="width:28%">Nome completo</th>
+                <th style="width:26%">Senha</th>
+                <th style="width:9%"></th>
+                <th style="width:9%"></th>
+              </tr>
+            </thead>
+            <tbody id="bulkMailboxRows">
+              <tr class="bulk-mailbox-row">
+                <td>
+                  <div class="input-group">
+                    <input type="text" class="form-control bulk-local-part" placeholder="usuario" pattern="[A-Za-z0-9\.!#$%&'*+/=?^_`{|}~-]+" autocorrect="off" autocapitalize="none">
+                    <span class="input-group-text bulk-domain-suffix">@</span>
+                  </div>
+                </td>
+                <td><input type="text" class="form-control bulk-name" placeholder="Nome completo"></td>
+                <td><input type="text" class="form-control bulk-password" placeholder="Senha"></td>
+                <td class="text-center"><a href="#" class="btn btn-sm btn-light bulk-generate-password" title="Gerar senha"><i class="bi bi-shuffle"></i></a></td>
+                <td class="text-center"><a href="#" class="btn btn-sm btn-light bulk-remove-row" title="Remover linha"><i class="bi bi-trash"></i></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" id="bulkMailboxAddRow"><i class="bi bi-plus-lg"></i> Adicionar outra conta</button>
+        <hr>
+        <div id="bulkMailboxResults"></div>
+        <div class="row">
+          <div class="offset-sm-2 col-sm-10">
+            <button type="button" class="btn btn-xs-lg d-block d-sm-inline btn-success" id="bulkMailboxSubmit">Criar contas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var $modal = null;
+  var rowTemplate = null;
+
+  function domainSuffix() {
+    var domain = $('#bulkMailboxDomain').val() || '';
+    return '@' + domain;
+  }
+
+  function refreshSuffixes() {
+    $('.bulk-domain-suffix').text(domainSuffix());
+  }
+
+  function randomPassword() {
+    if (typeof GPW !== 'undefined' && GPW.pronounceable) {
+      return GPW.pronounceable(10);
+    }
+    return Math.random().toString(36).slice(-10);
+  }
+
+  function addRow() {
+    var $row = rowTemplate.clone();
+    $row.find('input').val('');
+    $modal.find('#bulkMailboxRows').append($row);
+    refreshSuffixes();
+  }
+
+  function clearResults() {
+    $modal.find('#bulkMailboxResults').empty();
+  }
+
+  function rowResult(local_part, ok, msg) {
+    var icon = ok ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger';
+    $modal.find('#bulkMailboxResults').append(
+      '<div><i class="bi ' + icon + ' me-1"></i>' + $('<span>').text(local_part).html() + domainSuffix() + (msg ? ' - ' + $('<span>').text(msg).html() : '') + '</div>'
+    );
+  }
+
+  async function submitAll() {
+    var domain = $('#bulkMailboxDomain').val();
+    var quota = $('#bulkMailboxQuota').val() || 0;
+    var sogo_access = $('#bulkMailboxSogo').is(':checked') ? 1 : 0;
+    var rows = $modal.find('.bulk-mailbox-row').toArray();
+    clearResults();
+    var $submitBtn = $('#bulkMailboxSubmit');
+    $submitBtn.prop('disabled', true).text('Criando...');
+    var created = 0;
+    for (var i = 0; i < rows.length; i++) {
+      var $row = $(rows[i]);
+      var local_part = $row.find('.bulk-local-part').val().trim();
+      var name = $row.find('.bulk-name').val().trim();
+      var password = $row.find('.bulk-password').val();
+      if (!local_part || !password) {
+        continue;
+      }
+      var attr = {
+        local_part: local_part,
+        domain: domain,
+        name: name || local_part,
+        password: password,
+        password2: password,
+        quota: quota,
+        authsource: 'mailcow',
+        active: 1,
+        sogo_access: sogo_access,
+        force_pw_update: 0,
+        force_tfa: 0,
+        tags: []
+      };
+      try {
+        var res = await $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: '/api/v1/add/mailbox',
+          data: { attr: JSON.stringify(attr), csrf_token: csrf_token }
+        });
+        var ok = Array.isArray(res) && res.length && res[0].type !== 'danger';
+        var msg = (Array.isArray(res) && res.length) ? (Array.isArray(res[0].msg) ? res[0].msg.join(' ') : res[0].msg) : '';
+        rowResult(local_part, ok, ok ? '' : msg);
+        if (ok) { created++; }
+      } catch (err) {
+        rowResult(local_part, false, 'erro de conexao');
+      }
+    }
+    $submitBtn.prop('disabled', false).text('Criar contas');
+    if (created > 0) {
+      setTimeout(function () { window.location = window.location.href.split('#')[0]; }, 1200);
+    }
+  }
+
+  $(document).ready(function () {
+    $modal = $('#addMailboxBulkModal');
+    rowTemplate = $modal.find('.bulk-mailbox-row').first().clone();
+
+    $modal.on('shown.bs.modal', refreshSuffixes);
+    $('#bulkMailboxDomain').on('change', refreshSuffixes);
+    $('#bulkMailboxAddRow').on('click', function (e) { e.preventDefault(); addRow(); });
+    $modal.on('click', '.bulk-remove-row', function (e) {
+      e.preventDefault();
+      if ($modal.find('.bulk-mailbox-row').length > 1) {
+        $(this).closest('.bulk-mailbox-row').remove();
+      }
+    });
+    $modal.on('click', '.bulk-generate-password', function (e) {
+      e.preventDefault();
+      $(this).closest('.bulk-mailbox-row').find('.bulk-password').val(randomPassword());
+    });
+    $('#bulkMailboxSubmit').on('click', function (e) {
+      e.preventDefault();
+      submitAll();
+    });
+  });
+})();
+</script>
+<!-- add mailbox bulk modal (PorterMail) -->
 <!-- add mailbox template modal -->
 <div class="modal fade" id="addMailboxTemplateModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xl">

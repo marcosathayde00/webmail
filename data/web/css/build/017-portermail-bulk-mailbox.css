@@ -1,0 +1,116 @@
+/* PorterMail: modal de criacao de contas em massa (estilo Locaweb) - tabela limpa,
+   linhas soltas sem bordas pesadas, acao de destaque na cor da marca. */
+.porter-bulk-mailbox {
+  font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.porter-bulk-mailbox .modal-header {
+  background: #F7F8FA;
+  border-bottom: 1px solid #DCE1E0;
+}
+
+.porter-bulk-mailbox .modal-title {
+  font-weight: 600;
+  color: #1C1C1C;
+}
+
+.porter-bulk-table {
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.porter-bulk-table thead th {
+  border: none;
+  color: #656968;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 600;
+  padding-bottom: 4px;
+}
+
+.porter-bulk-table tbody tr.bulk-mailbox-row {
+  background: #F7F8FA;
+}
+
+.porter-bulk-table tbody td {
+  border: none;
+  vertical-align: middle;
+  padding: 8px 6px;
+}
+
+.porter-bulk-table tbody td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.porter-bulk-table tbody td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.porter-bulk-table .form-control {
+  border: 1px solid #DCE1E0;
+  border-radius: 4px;
+  background: #FFFFFF;
+}
+
+.porter-bulk-table .form-control:focus {
+  border-color: #384AA0;
+  box-shadow: 0 0 0 3px rgba(56, 74, 160, 0.18);
+}
+
+.porter-bulk-table .bulk-domain-suffix {
+  background: #EAEBED;
+  border: 1px solid #DCE1E0;
+  border-left: none;
+  color: #656968;
+  font-size: 13px;
+}
+
+.porter-bulk-mailbox #bulkMailboxAddRow {
+  background: transparent;
+  border: 1px dashed #97A6E6;
+  color: #384AA0;
+}
+
+.porter-bulk-mailbox #bulkMailboxAddRow:hover {
+  background: #EEF1FE;
+  border-color: #384AA0;
+}
+
+.porter-bulk-mailbox .bulk-generate-password,
+.porter-bulk-mailbox .bulk-remove-row {
+  border: none;
+  background: transparent;
+  color: #9A9E9D;
+}
+
+.porter-bulk-mailbox .bulk-generate-password:hover {
+  color: #384AA0;
+}
+
+.porter-bulk-mailbox .bulk-remove-row:hover {
+  color: #AA0004;
+}
+
+.porter-bulk-mailbox #bulkMailboxSubmit {
+  background-color: #384AA0 !important;
+  border-color: #384AA0 !important;
+  border-radius: 8px !important;
+  font-weight: 600;
+}
+
+.porter-bulk-mailbox #bulkMailboxSubmit:hover {
+  background-color: #263FA9 !important;
+  border-color: #263FA9 !important;
+}
+
+#bulkMailboxResults {
+  font-size: 13px;
+  max-height: 160px;
+  overflow-y: auto;
+}
